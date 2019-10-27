@@ -70,6 +70,18 @@ boolean charToInt(const char *String, int *num){
             return(0);
         *num *= 10;
         *num += *(String + i) - 48;
+    }*num *= sign;
+    return(1);
+}
+
+boolean charToUnsignedInt(const char *String, int *num){
+    int i;
+    *num = 0;
+    for(i = 0; *(String + i) != '\0'; i++){
+        if(*(String + i) < 48 || *(String + i) > 57)
+            return(0);
+        *num *= 10;
+        *num += *(String + i) - 48;
     }return(1);
 }
 
@@ -82,11 +94,20 @@ void numValidate(const char *String, int *var, const char *msg){
     return;
 }
 
+void numUnsignedValidate(const char *String, int *var, const char *msg){
+    do{
+        system("cls");
+        puts(msg);
+        gets(String);
+    }while(!charToUnsignedInt(String, var));
+    return;
+}
+
 
 void main(){
     char ch[10];
     int n, op = 0;
-    numValidate(ch, &n, "Insira o numero de termos da sua lista: ");
+    numUnsignedValidate(ch, &n, "Insira o numero de termos da sua lista: ");
     int num[n];
     do{
         numValidate(ch, &op, "Deseja inserir os numeros ou gera-los automaticamente?\n\n1 - Inserir\n2 - Gerar\n\nOpcao: ");
