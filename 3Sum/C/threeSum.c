@@ -5,13 +5,11 @@
 typedef enum Boolean{f, v} boolean;
 
 
-
 void vectorScan(int *vector, const int lenght){
+    char ch[10];
     int i;
     for(i = 0; i < lenght; i++){
-        system("cls");
-        printf("Insira o termo do indice [%d]: ", i);
-        scanf("%d", vector + i);
+        numValidate(ch, vector + i, "Insira o proximo termo: ");
     }
 }
 
@@ -47,23 +45,51 @@ boolean threeSum(const int *vector, const int lenght, int *n1, int *n2, int *n3)
         for(j = 0; j < lenght; j++)
             for(k = 0; k < lenght; k++)
                 if(*(vector + i) + *(vector + j) + *(vector + k) == 0){
-                    *n1 = *(vector + i);
-                    *n2 = *(vector + j);
-                    *n3 = *(vector + k);
-                    return(1);
+                    if(i == j || i == k || j == k)
+                        continue;
+                    else{
+                        *n1 = *(vector + i);
+                        *n2 = *(vector + j);
+                        *n3 = *(vector + k);
+                        return(1);
+                    }
                 }
     return(0);
 }
 
-void main(){
-    puts("Insira o numero de termos da sua lista: ");
-    int n, op;
-    scanf("%d", &n);
-    int num[n];
+boolean charToInt(const char *String, int *num){
+    int i = 0, sign = 1;
+    if(!(*String >= 48 || *String <= 57) && *String != 45)
+        return(0);
+    if(*String == 45){
+        sign = -1;
+        i = 1;
+    }*num = 0;
+    for(; *(String + i) != '\0'; i++){
+        if(*(String + i) < 48 || *(String + i) > 57)
+            return(0);
+        *num *= 10;
+        *num += *(String + i) - 48;
+    }return(1);
+}
+
+void numValidate(const char *String, int *var, const char *msg){
     do{
         system("cls");
-        puts("Deseja inserir os numeros ou gera-los automaticamente?\n\n1 - Inserir\n2 - Gerar\n\nOpcao: ");
-        scanf("%d", &op);
+        puts(msg);
+        gets(String);
+    }while(!charToInt(String, var));
+    return;
+}
+
+
+void main(){
+    char ch[10];
+    int n, op = 0;
+    numValidate(ch, &n, "Insira o numero de termos da sua lista: ");
+    int num[n];
+    do{
+        numValidate(ch, &op, "Deseja inserir os numeros ou gera-los automaticamente?\n\n1 - Inserir\n2 - Gerar\n\nOpcao: ");
     }while(op < 1 || op > 2);
     if(op == 1)
         vectorScan(num, n);
@@ -72,9 +98,12 @@ void main(){
     vectorPrint(num, n);
     int num1, num2, num3;
     if(threeSum(num, n, &num1, &num2, &num3))
-        printf("\n\n\nOs numeros %d, %d e %d somados resultam em zero.", num1, num2, num3);
+        printf("\n\n\nOs numeros %d, %d e %d somados resultam em zero.\n\n", num1, num2, num3);
+    else if(n < 3)
+        puts("\n\nSua lista nao possui elementos suficientes para a soma.\n\n");
     else
-        puts("\n\n\nNenhum dos numeros da lista, quando somados, resultam em zero");
+        puts("\n\n\nNenhum dos numeros da lista, quando somados, resultam em zero.\n\n");
+    system("Pause");
 
     return;
 }
