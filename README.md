@@ -1,4 +1,4 @@
-# FCT Hatoberfest Challenges
+# FCT Hacktoberfest Challenges
 
 Bem vindo ao nosso repositórioa para o hacktoberfest.
 
